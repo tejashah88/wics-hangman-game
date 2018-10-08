@@ -68,6 +68,7 @@ def print_body_part(num_guesses):
     print("|        \      ")
     print("|               ")
     print("                ")
+
   elif num_guesses == 0:
     print(" _______      ")
     print("|       |     ")

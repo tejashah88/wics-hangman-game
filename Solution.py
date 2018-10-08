@@ -1,26 +1,32 @@
 import random
 from useful_functions import *
 
-#display "Welcome to Hangman!"" on the console
+words = [
+  "hangman",
+  "womenincs",
+  "python",
+  "computer",
+  "engineering",
+  "friends",
+  "anime",
+  "something"
+]
+
+# display "Welcome to Hangman!"" on the console
 def greet_the_player():
   print("Welcome to Hangman!")
 
+# generate a random word from the 'words' array
 def pick_random_word():
-	# open the sowpods dictionary
-	with open("words.txt", 'r') as inf:
-		words = inf.readlines()
-	# generate a random index
-	# -1 because len(words) is not a valid index into the list `words`
-	index = random.randint(0, len(words) - 1)
-	# print out the word at that index
-	word = words[index].strip()
-	return word
+	word = random.choice(words)
+	return word.strip().lower()
 
-#ask the player for her guess and return that letter
+# ask the player for her guess and return that letter
 def ask_user_for_next_letter():
 	letter = input("Guess your letter: ")
 	return letter.strip().lower()
 
+# prints out the current letters correctly guess and any missing ones are blanks
 def generate_word_string(word, letters_guessed):
 	output = []
 	for letter in word:
@@ -32,39 +38,36 @@ def generate_word_string(word, letters_guessed):
 
 ########### this is where the program begins ############
 
-#greet the player
+# greet the player
 greet_the_player()
 
-#pick a word from the words.txt file
+# pick a word from the words.txt file
 WORD = pick_random_word()
 
 letters_to_guess = set(WORD)
 correct_letters_guessed = set()
 incorrect_letters_guessed = set()
 
-#player starts the game with 6 guesses and loses one for each incorrect guess
+# player starts the game with 6 guesses and loses one for each incorrect guess
 num_guesses = 6
 
 while (len(letters_to_guess) > 0) and num_guesses > 0:
   guess = ask_user_for_next_letter()
 
-  # check if we already guessed that
-  # letter
-  if guess in correct_letters_guessed or \
-      guess in incorrect_letters_guessed:
+  # check if we already guessed that letter
+  if guess in correct_letters_guessed or guess in incorrect_letters_guessed:
     # print out a message
-    print("You already guessed that letter.")
-
+    print("You already guessed that letter. Try again!")
   # if the guess was correct
-  if guess in letters_to_guess:
+  elif guess in letters_to_guess:
     # update the letters_to_guess
     letters_to_guess.remove(guess)
     # update the correct letters guessed
     correct_letters_guessed.add(guess)
+  # if the guess was incorrect
   else:
     incorrect_letters_guessed.add(guess)
-    # only update the number of guesses
-    # if you guess incorrectly
+    # only update the number of guesses if you guess incorrectly
     num_guesses -= 1
 
   print_body_part(num_guesses)
