@@ -18,30 +18,31 @@ def greet_the_player():
 
 # generate a random word from the 'words' array
 def pick_random_word():
-	word = random.choice(words)
-	return word.strip().lower()
+  word = random.choice(words)
+  return word.strip().lower()
 
 # ask the player for her guess and return that letter
 def ask_user_for_next_letter():
-	letter = input("Guess your letter: ")
-	return letter.strip().lower()
+  letter = input("Guess your letter: ")
+  return letter.strip().lower()
 
 # prints out the current letters correctly guess and any missing ones are blanks
 def generate_word_string(word, letters_guessed):
-	output = []
-	for letter in word:
-		if letter in letters_guessed:
-			output.append(letter)
-		else:
-			output.append("_")
-	return " ".join(output)
+  output = ""
+  for letter in word:
+    if letter in letters_guessed:
+      output += letter
+    else:
+      output += "_"
+    output += " "
+  return output
 
 ########### this is where the program begins ############
 
 # greet the player
 greet_the_player()
 
-# pick a word from the words.txt file
+# pick a word from the words array
 WORD = pick_random_word()
 
 letters_to_guess = set(WORD)
@@ -58,26 +59,24 @@ while (len(letters_to_guess) > 0) and num_guesses > 0:
   if guess in correct_letters_guessed or guess in incorrect_letters_guessed:
     # print out a message
     print("You already guessed that letter. Try again!")
-  # if the guess was correct
-  elif guess in letters_to_guess:
+  elif guess in letters_to_guess: # if the guess was correct
     # update the letters_to_guess
     letters_to_guess.remove(guess)
     # update the correct letters guessed
     correct_letters_guessed.add(guess)
-  # if the guess was incorrect
-  else:
+  else: # if the guess was incorrect
     incorrect_letters_guessed.add(guess)
     # only update the number of guesses if you guess incorrectly
     num_guesses -= 1
+    print_body_part(num_guesses)
 
-  print_body_part(num_guesses)
   word_string = generate_word_string(WORD, correct_letters_guessed)
   print(word_string)
   print()
-  print("You have {} guesses left".format(num_guesses))
+  print("You have " + str(num_guesses) + " guesses left")
 
 # tell the user they have won or lost
 if num_guesses > 0:
-  print("Congratulations! You correctly guessed the word {}!".format(WORD))
+  print("Congratulations! You correctly guessed the word " + WORD)
 else:
-  print("Sorry, you lost! Your word was {}".format(WORD))
+  print("Sorry, you lost! Your word was " + WORD)
